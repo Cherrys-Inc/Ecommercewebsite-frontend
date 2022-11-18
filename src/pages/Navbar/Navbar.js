@@ -1,13 +1,25 @@
 import React from "react";
-import { NavLink,Link } from "react-router-dom";
+import { NavLink,Link, useNavigate } from "react-router-dom";
+import { auth } from "../../firebase";
+import { useDispatch } from "react-redux";
+import { clearUser } from "../../features/userSlice";
 import "./Navbar.css"
 
 const Navbar = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    function logout(){
+        auth.signOut();
+    localStorage.clear();
+    dispatch(clearUser());
+    navigate("/");
+    }
+  
     return (
         <div className="container-fluid">
         <nav className="navbar navbar-expand-sm row frow">
             <div className="col-sm-7 navcol1">
-                <div className="logo-text"> Ecom <i class="fa fa-cart-plus" aria-hidden="true"></i> </div>
+                <div className="logo-text"> Ecom <i className="fa fa-cart-plus" aria-hidden="true"></i> </div>
                 
             </div>
             <div className="col-sm-5 navcol2 text-right">
@@ -22,13 +34,19 @@ const Navbar = () => {
                             <NavLink to="/orders" className="nav-link" >Orders</NavLink>
                         </li>
                         <li>
+                            {console.log(localStorage.getItem('user')===null)}
+                            {localStorage.getItem('user')===null?
+                            (
                             <NavLink to="/login" className="nav-link" >Login</NavLink>
+                            ):
+                            (<NavLink to="/" onClick={logout} className="nav-link" >Logout</NavLink>)
+                            }
                         </li>
                 </ul>
             </div>
         </nav>
         <input type="checkbox" id="hamburger-input" className="burger-shower" />
-        <label id="hamburger-menu" for="hamburger-input">
+        <label id="hamburger-menu" >
                 <nav id="sidebar-menu">
                     <ul>
                         <li>
@@ -44,7 +62,11 @@ const Navbar = () => {
                             <NavLink to="/orders" className="nav-link" >Orders</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/login" className="nav-link">Login</NavLink>
+                        {localStorage.getItem('user') === null?(
+                            <NavLink to="/login" className="nav-link" >Login</NavLink>
+                            ):
+                            (<NavLink to="/" onClick={logout} className="nav-link" >Logout</NavLink>)
+                            }
                         </li>
                     </ul>
                 </nav>
