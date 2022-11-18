@@ -34,7 +34,7 @@ const Navbar = () => {
                             <NavLink to="/orders" className="nav-link" >Orders</NavLink>
                         </li>
                         <li>
-                            {console.log(localStorage.getItem('user')===null)}
+                            
                             {localStorage.getItem('user')===null?
                             (
                             <NavLink to="/login" className="nav-link" >Login</NavLink>
